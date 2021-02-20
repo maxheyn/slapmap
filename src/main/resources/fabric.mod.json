@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "slapmap",
+  "version": "${version}",
+  "name": "Slapmap",
+  "description": "a minecraft mod that allows players to easily import and manage images through a simple set of commands",
+  "authors": [
+    "kalkronline"
+  ],
+  "contact": {
+    "website": "kalkr.online"
+  },
+  "license": "MIT",
+  "icon": "assets/slapmap/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "online.kalkr.slapmap.Slapmap"
+    ]
+  },
+  "mixins": [
+    "slapmap.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.1",
+    "fabric": "*",
+    "minecraft": "1.16.5"
+  }
+}
