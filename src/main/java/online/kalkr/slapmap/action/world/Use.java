@@ -19,32 +19,26 @@ import online.kalkr.slapmap.func.OrientationManager;
 
 public class Use {
 
-    private static PlayerEntity player;
-    private static World world;
-
-    public static TypedActionResult<ItemStack> onUse(PlayerEntity p, World w, Hand hand) {
-        player = p;
-        world = w;
+    public static TypedActionResult<ItemStack> onUse(PlayerEntity player, World world, Hand hand) {
         HitResult hit = player.raycast(player.isCreative() ? 5 : 4.5, 1, false);
-        ItemStack handItem = Iterables.get(player.getItemsHand(), 0);
+        ItemStack handItem = player.getStackInHand(hand);
         TypedActionResult<ItemStack> pass = TypedActionResult.pass(ItemStack.EMPTY);
 
         if (hit.getType() != HitResult.Type.BLOCK || world.isClient) return pass;
 
-        if (handItem.getName().getString().contains("Slapstick")) stickevent(hit, handItem);
-        if (handItem.getItem() == Items.FILLED_MAP) mapEvent(hit, handItem);
+        if (handItem.getName().getString().contains("Slapstick")) stickevent(player, world, hit, handItem);
+        if (handItem.getItem() == Items.FILLED_MAP) mapEvent(player, world, hit, handItem);
 
         return pass;
     }
 
 
-    private static void mapEvent (HitResult hit, ItemStack handItem) {
+    private static void mapEvent (PlayerEntity player, World world, HitResult hit, ItemStack handItem) {
         Direction playerDirection = Direction.fromRotation(player.getRotationClient().y);
         Direction blockFace = ((BlockHitResult) hit).getSide();
         BlockPos originBlockPosition = ((BlockHitResult) hit).getBlockPos();
 
-        OrientationManager orientation =
-                new OrientationManager(originBlockPosition, 1, 1, blockFace, playerDirection);
+        OrientationManager orientation = new OrientationManager(originBlockPosition, 1, 1, blockFace, playerDirection);
         BlockBox box = orientation.box;
 
         for (BlockPos framePos : BlockPos.iterate(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ)) {
@@ -54,6 +48,8 @@ public class Use {
             itemFrame.updatePosition(framePos.getX(), framePos.getY(), framePos.getZ());
             itemFrame.setRotation(orientation.rotation);
             itemFrame.setInvisible(true);
+
+            if (!player.isCreative()) handItem.decrement(1);
 
             CompoundTag tag = new CompoundTag();
             itemFrame.writeCustomDataToTag(tag);
@@ -65,7 +61,7 @@ public class Use {
     }
 
 
-    private static void stickevent (HitResult hit, ItemStack handItem) {
+    private static void stickevent (PlayerEntity player, World world, HitResult hit, ItemStack handItem) {
         assert handItem.getTag() != null;
         String image = handItem.getTag().getString("image");
 

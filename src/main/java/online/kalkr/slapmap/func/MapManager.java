@@ -118,6 +118,7 @@ public class MapManager {
 
     public String getNameFromId (int id) {
         AtomicReference<String> name = new AtomicReference<String>();
+        name.getAndSet(String.valueOf(id));
         store.forEach((key, value) -> {
             if (Arrays.asList(value.mapIds).contains(id)) name.getAndSet(key);
         });

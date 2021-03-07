@@ -20,13 +20,13 @@ public class Punch {
         if (!((ItemFrameEntity) entity).getHeldItemStack().isItemEqual(Items.FILLED_MAP.getDefaultStack())) return ActionResult.PASS;
 
         Box pos = new Box(entity.getPos().x, entity.getPos().y, entity.getPos().z, entity.getPos().x, entity.getPos().y, entity.getPos().z);
-        if (player.isSneaking()) {
+        if (player.isSneaking() && player.isCreative()) {
             //TODO: get better box, instead of big dumb one that targets more than it should
             pos = new Box(entity.getPos().x+99, entity.getPos().y+99, entity.getPos().z+99, entity.getPos().x-99, entity.getPos().y-99, entity.getPos().z-99);
         }
 
         for (ItemFrameEntity itemFrame : world.getEntitiesByType(EntityType.ITEM_FRAME, pos, fromBox -> isSameImage(fromBox, (ItemFrameEntity) entity))) {
-            if (!player.isSneaking()) {
+            if (!(player.isSneaking() && player.isCreative())) {
                 ItemEntity item = new ItemEntity(world, itemFrame.getPos().x, itemFrame.getPos().y, itemFrame.getPos().z, itemFrame.getHeldItemStack());
                 world.spawnEntity(item);
             }
