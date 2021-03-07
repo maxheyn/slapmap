@@ -3,17 +3,16 @@ package online.kalkr.slapmap.func;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MapManager {
 
@@ -114,6 +113,15 @@ public class MapManager {
             }
         }
         return false;
+    }
+
+
+    public String getNameFromId (int id) {
+        AtomicReference<String> name = new AtomicReference<String>();
+        store.forEach((key, value) -> {
+            if (Arrays.asList(value.mapIds).contains(id)) name.getAndSet(key);
+        });
+        return name.get();
     }
 
 

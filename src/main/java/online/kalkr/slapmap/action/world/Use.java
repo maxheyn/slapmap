@@ -22,7 +22,7 @@ public class Use {
     private static PlayerEntity player;
     private static World world;
 
-    public static TypedActionResult<ItemStack> builder(PlayerEntity p, World w, Hand hand) {
+    public static TypedActionResult<ItemStack> onUse(PlayerEntity p, World w, Hand hand) {
         player = p;
         world = w;
         HitResult hit = player.raycast(player.isCreative() ? 5 : 4.5, 1, false);
@@ -39,7 +39,6 @@ public class Use {
 
 
     private static void mapEvent (HitResult hit, ItemStack handItem) {
-
         Direction playerDirection = Direction.fromRotation(player.getRotationClient().y);
         Direction blockFace = ((BlockHitResult) hit).getSide();
         BlockPos originBlockPosition = ((BlockHitResult) hit).getBlockPos();
