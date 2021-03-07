@@ -1,5 +1,10 @@
 package online.kalkr.slapmap.func;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.decoration.ItemFrameEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;
 
@@ -7,12 +12,12 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MapManager {
 
     private final Hashtable<String, ImageData> store = new Hashtable<String, ImageData>();
     private final String slapDataPath;
-
 
     private static class ImageData {
         public int width;
@@ -25,7 +30,6 @@ public class MapManager {
             this.mapIds = mapIds;
         }
     }
-
 
     public MapManager(MinecraftServer server) {
         slapDataPath = (server.isDedicated() ? "world/." : server.getSavePath(WorldSavePath.ROOT).toString().split("\\./")[1]) + "/data/_slap.dat";
@@ -58,7 +62,6 @@ public class MapManager {
         }
     }
 
-
     public void add(String key, int width, int height, Integer[] mapIds, boolean writeToFile) {
         store.put(key, new ImageData(width, height, mapIds));
 
@@ -78,7 +81,6 @@ public class MapManager {
         }
     }
 
-
     public String[] list() {
         String[] keyArray = new String[store.size()];
 
@@ -93,21 +95,37 @@ public class MapManager {
         return keyArray;
     }
 
+    public int getIdFromEntity(Entity entity) {
+        if (entity.getType() != EntityType.ITEM_FRAME) return -1;
+        ItemStack heldItem = ((ItemFrameEntity) entity).getHeldItemStack();
+        if (!heldItem.isItemEqual(Items.FILLED_MAP.getDefaultStack())) return -1;
+        return heldItem.getTag().getInt("map");
+    }
+
+    public boolean isIdManaged(int id) {
+        return !String.valueOf(id).equals(getNameFromId(id));
+    }
+
+    public String getNameFromId(int id) {
+        AtomicReference<String> name = new AtomicReference<String>();
+        name.getAndSet(String.valueOf(id));
+        store.forEach((key, value) -> {
+            if (Arrays.asList(value.mapIds).contains(id)) name.getAndSet(key);
+        });
+        return name.get();
+    }
 
     public boolean has(String key) {
         return store.containsKey(key);
     }
 
-
     public int getWidth(String key) {
         return store.get(key).width;
     }
 
-
     public int getHeight(String key) {
         return store.get(key).height;
     }
-
 
     public Integer[] getMaps(String key) {
         return store.get(key).mapIds;

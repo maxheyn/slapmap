@@ -6,12 +6,13 @@ import online.kalkr.slapmap.func.MapManager;
 
 public class Slapmap implements ModInitializer {
 
-    public static MapManager loadedMaps;
+    public static MapManager mapManager;
 
     @Override
     public void onInitialize() {
         Register.slapCommand();
-        Register.stickEvent();
+        Register.useEvent();
+        Register.punchEvent();
         Register.serverEvent();
     }
 }

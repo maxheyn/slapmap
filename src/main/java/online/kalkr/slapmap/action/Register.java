@@ -1,11 +1,13 @@
 package online.kalkr.slapmap.action;
 
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.server.command.CommandManager;
 import online.kalkr.slapmap.action.server.Start;
 import online.kalkr.slapmap.action.subcommand.Slap;
 import online.kalkr.slapmap.action.subcommand.Stick;
+import online.kalkr.slapmap.action.world.Punch;
 import online.kalkr.slapmap.action.world.Use;
 
 public class Register {
@@ -34,11 +36,11 @@ public class Register {
             ));
     }
 
-    public static void stickEvent () {
-        UseItemCallback.EVENT.register((player, world, hand) -> Use.builder(player, world));
-    }
+    public static void useEvent () { UseItemCallback.EVENT.register(Use::onUse); }
 
-    public static void serverEvent () {
-        Start.build();
+    public static void serverEvent () { Start.build(); }
+
+    public static void punchEvent () {
+        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> Punch.onPunch(world, player, entity));
     }
 }

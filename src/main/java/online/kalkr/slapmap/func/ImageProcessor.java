@@ -21,7 +21,6 @@ public class ImageProcessor {
 
     private static final int[][] mcColorArray = initColorArray();
 
-
     private static int[][] initColorArray() {
         final int[][] mcColors = {
                 {127,178,56},{247,233,163},{199,199,199},{255,0,0},{160,160,255},{167,167,167},{0,124,0},
@@ -49,7 +48,6 @@ public class ImageProcessor {
         return mcColorsFinal;
     }
 
-
     public boolean fromUrl(String urlString) {
         BufferedImage image;
 
@@ -72,15 +70,14 @@ public class ImageProcessor {
 
         for (int i = channels-3; i < colorData.length; i+=channels) {
             pixels[i/channels] = new float[]{
-                colorData[i+2] & 0xff,
-                colorData[i+1] & 0xff,
-                colorData[i] & 0xff,
+                    colorData[i+2] & 0xff,
+                    colorData[i+1] & 0xff,
+                    colorData[i] & 0xff,
             };
         }
 
         return true;
     }
-
 
     public boolean dither() {
         colorIds = new int[pixels.length];
@@ -92,9 +89,9 @@ public class ImageProcessor {
                 int colorId = reduceColor(oldpixel);
 
                 pixels[x+y*width] = new float[]{
-                    (float) mcColorArray[colorId][0],
-                    (float) mcColorArray[colorId][1],
-                    (float) mcColorArray[colorId][2],
+                        (float) mcColorArray[colorId][0],
+                        (float) mcColorArray[colorId][1],
+                        (float) mcColorArray[colorId][2],
                 };
                 colorIds[x+y*width] = colorId + 4;
 
@@ -109,7 +106,6 @@ public class ImageProcessor {
 
         return true;
     }
-
 
     private static int reduceColor(float[] pixel) {
         float lowest = Float.MAX_VALUE;
@@ -126,15 +122,13 @@ public class ImageProcessor {
         return colorId;
     };
 
-
     private float[] find_difference (float[] original, float[] updated) {
         return new float[]{
-            (float) ((original[0]-updated[0]) * 0.6),
-            (float) ((original[1]-updated[1]) * 0.6),
-            (float) ((original[2]-updated[2]) * 0.6),
+                (float) ((original[0]-updated[0]) * 0.6),
+                (float) ((original[1]-updated[1]) * 0.6),
+                (float) ((original[2]-updated[2]) * 0.6),
         };
     }
-
 
     private void add_difference (int index, float[] diff, float factor) {
         pixels[index][0] += diff[0] * factor / 16;
@@ -142,14 +136,12 @@ public class ImageProcessor {
         pixels[index][2] += diff[2] * factor / 16;
     }
 
-
     public boolean toMaps(String imageName, ServerWorld world) {
         int mapsWidth = width/128 + 1;
         int mapsHeight = height/128 + 1;
 
         Integer[] stacks = new Integer[mapsWidth*mapsHeight];
 
-        // TODO: simplify this...
         for (int mapy = 0; mapy < mapsHeight; mapy++) {
             for (int mapx = 0; mapx < mapsWidth; mapx++) {
 
@@ -173,7 +165,7 @@ public class ImageProcessor {
             }
         }
 
-        Slapmap.loadedMaps.add(imageName, mapsWidth, mapsHeight, stacks, true);
+        Slapmap.mapManager.add(imageName, mapsWidth, mapsHeight, stacks, true);
         return true;
     }
 }
