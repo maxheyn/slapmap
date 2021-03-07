@@ -5,10 +5,9 @@ import online.kalkr.slapmap.Slapmap;
 import online.kalkr.slapmap.func.MapManager;
 
 public class Start {
-
     public static void build() {
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
-            Slapmap.loadedMaps = new MapManager(server);
+            Slapmap.mapManager = new MapManager(server);
         });
     }
 }

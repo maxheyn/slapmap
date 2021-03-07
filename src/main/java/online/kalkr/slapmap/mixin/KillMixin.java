@@ -19,12 +19,12 @@ import java.util.Collection;
 @Mixin(KillCommand.class)
 public class KillMixin {
     @Inject(at = @At("HEAD"), method = "execute", cancellable = true)
-    private static void execute(ServerCommandSource source, Collection<? extends Entity> targets, CallbackInfoReturnable<Integer> ci) {
+    private static void execute(ServerCommandSource source, Collection<? extends Entity> targets, CallbackInfoReturnable<Integer> returnable) {
         Text name = null;
         int count = 0;
 
         for (Entity entity : targets) {
-            if(!(entity.getType() == EntityType.ITEM_FRAME && ((ItemFrameEntity) entity).getHeldItemStack().getItem() == Items.FILLED_MAP && Slapmap.loadedMaps.isEntityManaged(entity))) {
+            if (!(entity.getType() == EntityType.ITEM_FRAME && ((ItemFrameEntity) entity).getHeldItemStack().getItem() == Items.FILLED_MAP && Slapmap.mapManager.isIdManaged(Slapmap.mapManager.getIdFromEntity(entity)))) {
                 entity.kill();
                 name = entity.getDisplayName();
                 count++;
@@ -37,6 +37,6 @@ public class KillMixin {
             source.sendFeedback(new TranslatableText("commands.kill.success.multiple", count), true);
         }
 
-        ci.setReturnValue(targets.size());
+        returnable.setReturnValue(targets.size());
     }
 }

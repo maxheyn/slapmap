@@ -13,20 +13,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemFrameEntity.class)
 public class InteractMixin {
-
     @Inject(method = "interact", at = @At(value = "HEAD"))
-    private void mixTop(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        ItemFrameEntity dis = (ItemFrameEntity)(Object) this;
-        ((FixedAccessor) dis).setFixed(false);
+    private void interactTop(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> returnable) {
+        ItemFrameEntity self = (ItemFrameEntity) (Object) this;
+        ((FixedAccessor) self).setFixed(false);
     }
 
     @Inject(method = "interact", at = @At(value = "TAIL"))
-    private void mixBot(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        ItemFrameEntity dis = (ItemFrameEntity)(Object) this;
+    private void interactBottom(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> returnable) {
+        ItemFrameEntity self = (ItemFrameEntity) (Object) this;
 
-        boolean isManaged = Slapmap.loadedMaps.isEntityManaged(dis);
-        if (isManaged && dis.isInvisible()) {
-            ((FixedAccessor) dis).setFixed(true);
+        boolean isManaged = Slapmap.mapManager.isIdManaged(Slapmap.mapManager.getIdFromEntity(self));
+        if (isManaged && self.isInvisible()) {
+            ((FixedAccessor) self).setFixed(true);
         }
     }
 }

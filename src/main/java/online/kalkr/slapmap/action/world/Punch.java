@@ -5,19 +5,15 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import online.kalkr.slapmap.Slapmap;
 
 public class Punch {
-
     public static ActionResult onPunch (World world, PlayerEntity player, Entity entity) {
         if (world.isClient) return ActionResult.PASS;
-
-        if (entity.getType() != EntityType.ITEM_FRAME) return ActionResult.PASS;
-        if (!((ItemFrameEntity) entity).getHeldItemStack().isItemEqual(Items.FILLED_MAP.getDefaultStack())) return ActionResult.PASS;
+        if (!Slapmap.mapManager.isIdManaged(Slapmap.mapManager.getIdFromEntity(entity))) return ActionResult.PASS;
 
         Box pos = new Box(entity.getPos().x, entity.getPos().y, entity.getPos().z, entity.getPos().x, entity.getPos().y, entity.getPos().z);
         if (player.isSneaking() && player.isCreative()) {
@@ -37,8 +33,9 @@ public class Punch {
     }
 
     public static boolean isSameImage(ItemFrameEntity entityFromBox, ItemFrameEntity punchedEntity) {
+        if (Slapmap.mapManager.getIdFromEntity(entityFromBox) == -1) return false;
         int boxedId = entityFromBox.getHeldItemStack().getTag().getInt("map");
         int punchedId = punchedEntity.getHeldItemStack().getTag().getInt("map");
-        return Slapmap.loadedMaps.getNameFromId(boxedId).equals(Slapmap.loadedMaps.getNameFromId(punchedId));
+        return Slapmap.mapManager.getNameFromId(boxedId).equals(Slapmap.mapManager.getNameFromId(punchedId));
     }
 }

@@ -1,6 +1,5 @@
 package online.kalkr.slapmap.action.world;
 
-import com.google.common.collect.Iterables;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -17,8 +16,9 @@ import net.minecraft.world.World;
 import online.kalkr.slapmap.Slapmap;
 import online.kalkr.slapmap.func.OrientationManager;
 
-public class Use {
+import java.util.function.Function;
 
+public class Use {
     public static TypedActionResult<ItemStack> onUse(PlayerEntity player, World world, Hand hand) {
         HitResult hit = player.raycast(player.isCreative() ? 5 : 4.5, 1, false);
         ItemStack handItem = player.getStackInHand(hand);
@@ -32,34 +32,17 @@ public class Use {
         return pass;
     }
 
-
     private static void mapEvent (PlayerEntity player, World world, HitResult hit, ItemStack handItem) {
         Direction playerDirection = Direction.fromRotation(player.getRotationClient().y);
         Direction blockFace = ((BlockHitResult) hit).getSide();
         BlockPos originBlockPosition = ((BlockHitResult) hit).getBlockPos();
 
         OrientationManager orientation = new OrientationManager(originBlockPosition, 1, 1, blockFace, playerDirection);
-        BlockBox box = orientation.box;
 
-        for (BlockPos framePos : BlockPos.iterate(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ)) {
-            ItemFrameEntity itemFrame = new ItemFrameEntity(world, new BlockPos(0, 0, 0), blockFace);
+        placeMaps(world, orientation, blockFace, (pos) -> handItem);
 
-            itemFrame.setHeldItemStack(handItem);
-            itemFrame.updatePosition(framePos.getX(), framePos.getY(), framePos.getZ());
-            itemFrame.setRotation(orientation.rotation);
-            itemFrame.setInvisible(true);
-
-            if (!player.isCreative()) handItem.decrement(1);
-
-            CompoundTag tag = new CompoundTag();
-            itemFrame.writeCustomDataToTag(tag);
-            tag.putBoolean("Fixed", true);
-            itemFrame.readCustomDataFromTag(tag);
-
-            world.spawnEntity(itemFrame);
-        }
+        if (!player.isCreative()) handItem.decrement(1);
     }
-
 
     private static void stickevent (PlayerEntity player, World world, HitResult hit, ItemStack handItem) {
         assert handItem.getTag() != null;
@@ -71,17 +54,21 @@ public class Use {
 
         OrientationManager orientation = new OrientationManager(
                 originBlockPosition,
-                Slapmap.loadedMaps.getWidth(image),
-                Slapmap.loadedMaps.getHeight(image),
+                Slapmap.mapManager.getWidth(image),
+                Slapmap.mapManager.getHeight(image),
                 blockFace,
                 playerDirection
         );
-        BlockBox box = orientation.box;
 
+        placeMaps(world, orientation, blockFace, (pos) -> getMapFromId(Slapmap.mapManager.getMaps(image)[pos]));
+    }
+
+    private static void placeMaps(World world, OrientationManager orientation, Direction blockFace, Function<Integer, ItemStack> getItem) {
+        BlockBox box = orientation.box;
         for (BlockPos framePos : BlockPos.iterate(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ)) {
             ItemFrameEntity itemFrame = new ItemFrameEntity(world, new BlockPos(0, 0, 0), blockFace);
 
-            itemFrame.setHeldItemStack(getMapFromId(Slapmap.loadedMaps.getMaps(image)[orientation.relPos(framePos)]));
+            itemFrame.setHeldItemStack(getItem.apply(orientation.relPos(framePos)));
             itemFrame.updatePosition(framePos.getX(), framePos.getY(), framePos.getZ());
             itemFrame.setRotation(orientation.rotation);
             itemFrame.setInvisible(true);
@@ -94,7 +81,6 @@ public class Use {
             world.spawnEntity(itemFrame);
         }
     }
-
 
     private static ItemStack getMapFromId(int id) {
         ItemStack item = new ItemStack(Items.FILLED_MAP);

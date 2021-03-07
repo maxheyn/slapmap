@@ -6,7 +6,7 @@ import online.kalkr.slapmap.func.MapManager;
 
 public class Slapmap implements ModInitializer {
 
-    public static MapManager loadedMaps;
+    public static MapManager mapManager;
 
     @Override
     public void onInitialize() {
@@ -15,6 +15,4 @@ public class Slapmap implements ModInitializer {
         Register.punchEvent();
         Register.serverEvent();
     }
-
 }
-

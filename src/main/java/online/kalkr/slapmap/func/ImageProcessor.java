@@ -21,7 +21,6 @@ public class ImageProcessor {
 
     private static final int[][] mcColorArray = initColorArray();
 
-
     private static int[][] initColorArray() {
         final int[][] mcColors = {
                 {127,178,56},{247,233,163},{199,199,199},{255,0,0},{160,160,255},{167,167,167},{0,124,0},
@@ -48,7 +47,6 @@ public class ImageProcessor {
 
         return mcColorsFinal;
     }
-
 
     public boolean fromUrl(String urlString) {
         BufferedImage image;
@@ -81,7 +79,6 @@ public class ImageProcessor {
         return true;
     }
 
-
     public boolean dither() {
         colorIds = new int[pixels.length];
 
@@ -110,7 +107,6 @@ public class ImageProcessor {
         return true;
     }
 
-
     private static int reduceColor(float[] pixel) {
         float lowest = Float.MAX_VALUE;
         int colorId = 0;
@@ -126,7 +122,6 @@ public class ImageProcessor {
         return colorId;
     };
 
-
     private float[] find_difference (float[] original, float[] updated) {
         return new float[]{
                 (float) ((original[0]-updated[0]) * 0.6),
@@ -135,13 +130,11 @@ public class ImageProcessor {
         };
     }
 
-
     private void add_difference (int index, float[] diff, float factor) {
         pixels[index][0] += diff[0] * factor / 16;
         pixels[index][1] += diff[1] * factor / 16;
         pixels[index][2] += diff[2] * factor / 16;
     }
-
 
     public boolean toMaps(String imageName, ServerWorld world) {
         int mapsWidth = width/128 + 1;
@@ -149,7 +142,6 @@ public class ImageProcessor {
 
         Integer[] stacks = new Integer[mapsWidth*mapsHeight];
 
-        // TODO: simplify this...
         for (int mapy = 0; mapy < mapsHeight; mapy++) {
             for (int mapx = 0; mapx < mapsWidth; mapx++) {
 
@@ -173,7 +165,7 @@ public class ImageProcessor {
             }
         }
 
-        Slapmap.loadedMaps.add(imageName, mapsWidth, mapsHeight, stacks, true);
+        Slapmap.mapManager.add(imageName, mapsWidth, mapsHeight, stacks, true);
         return true;
     }
 }

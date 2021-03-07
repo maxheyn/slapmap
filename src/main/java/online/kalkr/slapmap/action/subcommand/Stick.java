@@ -16,20 +16,18 @@ import net.minecraft.text.LiteralText;
 import online.kalkr.slapmap.Slapmap;
 
 public class Stick {
-
     public static final ArgumentBuilder<ServerCommandSource, LiteralArgumentBuilder<ServerCommandSource>> builder =
             CommandManager.literal("give")
                     .then(CommandManager.argument("name", StringArgumentType.greedyString())
                             .executes(Stick::giveName)
 
-                            .suggests ((context, builder) -> {
-                                for (String image : Slapmap.loadedMaps.list()) {
+                            .suggests((context, builder) -> {
+                                for (String image : Slapmap.mapManager.list()) {
                                     builder.suggest(image);
                                 }
                                 return builder.buildFuture();
                             })
                     );
-
 
     public static void giveStick(PlayerEntity player, String name) {
         CompoundTag imageTag = new CompoundTag();
@@ -43,13 +41,12 @@ public class Stick {
         player.world.spawnEntity(itemEntity);
     }
 
-
     private static int giveName(CommandContext<ServerCommandSource> c) throws CommandSyntaxException {
         ServerCommandSource src = c.getSource();
         PlayerEntity player = src.getPlayer();
 
         String name = StringArgumentType.getString(c, "name");
-        if (!Slapmap.loadedMaps.has(name)) {
+        if (!Slapmap.mapManager.has(name)) {
             src.sendFeedback(new LiteralText("§cThere isn't an image named §o" + name + "!"), true);
             src.sendFeedback(new LiteralText("§7§oTry importing one using: /slap " + name + " https://..."), true);
             return -1;
