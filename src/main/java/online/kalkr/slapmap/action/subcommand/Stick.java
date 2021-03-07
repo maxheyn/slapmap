@@ -18,17 +18,17 @@ import online.kalkr.slapmap.Slapmap;
 public class Stick {
 
     public static final ArgumentBuilder<ServerCommandSource, LiteralArgumentBuilder<ServerCommandSource>> builder =
-        CommandManager.literal("give")
-        .then(CommandManager.argument("name", StringArgumentType.greedyString())
-            .executes(Stick::giveName)
+            CommandManager.literal("give")
+                    .then(CommandManager.argument("name", StringArgumentType.greedyString())
+                            .executes(Stick::giveName)
 
-            .suggests ((context, builder) -> {
-                for (String image : Slapmap.loadedMaps.list()) {
-                    builder.suggest(image);
-                }
-                return builder.buildFuture();
-            })
-        );
+                            .suggests ((context, builder) -> {
+                                for (String image : Slapmap.loadedMaps.list()) {
+                                    builder.suggest(image);
+                                }
+                                return builder.buildFuture();
+                            })
+                    );
 
 
     public static void giveStick(PlayerEntity player, String name) {

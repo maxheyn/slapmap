@@ -72,9 +72,9 @@ public class ImageProcessor {
 
         for (int i = channels-3; i < colorData.length; i+=channels) {
             pixels[i/channels] = new float[]{
-                colorData[i+2] & 0xff,
-                colorData[i+1] & 0xff,
-                colorData[i] & 0xff,
+                    colorData[i+2] & 0xff,
+                    colorData[i+1] & 0xff,
+                    colorData[i] & 0xff,
             };
         }
 
@@ -92,9 +92,9 @@ public class ImageProcessor {
                 int colorId = reduceColor(oldpixel);
 
                 pixels[x+y*width] = new float[]{
-                    (float) mcColorArray[colorId][0],
-                    (float) mcColorArray[colorId][1],
-                    (float) mcColorArray[colorId][2],
+                        (float) mcColorArray[colorId][0],
+                        (float) mcColorArray[colorId][1],
+                        (float) mcColorArray[colorId][2],
                 };
                 colorIds[x+y*width] = colorId + 4;
 
@@ -129,9 +129,9 @@ public class ImageProcessor {
 
     private float[] find_difference (float[] original, float[] updated) {
         return new float[]{
-            (float) ((original[0]-updated[0]) * 0.6),
-            (float) ((original[1]-updated[1]) * 0.6),
-            (float) ((original[2]-updated[2]) * 0.6),
+                (float) ((original[0]-updated[0]) * 0.6),
+                (float) ((original[1]-updated[1]) * 0.6),
+                (float) ((original[2]-updated[2]) * 0.6),
         };
     }
 

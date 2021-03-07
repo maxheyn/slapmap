@@ -1,9 +1,16 @@
 package online.kalkr.slapmap.func;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.decoration.ItemFrameEntity;
+import net.minecraft.item.FilledMapItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -91,6 +98,22 @@ public class MapManager {
         Arrays.sort(keyArray);
 
         return keyArray;
+    }
+
+
+    public boolean isEntityManaged (Entity entity) {
+        if (entity.getType() != EntityType.ITEM_FRAME) return false;
+        ItemStack heldItem = ((ItemFrameEntity) entity).getHeldItemStack();
+        if (!heldItem.isItemEqual(Items.FILLED_MAP.getDefaultStack())) return false;
+        int id = heldItem.getTag().getInt("map");
+
+        for (String key : list()) {
+            ImageData img = store.get(key);
+            for (int dataid : img.mapIds) {
+                if (id == dataid) return true;
+            }
+        }
+        return false;
     }
 
 

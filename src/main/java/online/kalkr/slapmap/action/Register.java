@@ -35,7 +35,7 @@ public class Register {
     }
 
     public static void stickEvent () {
-        UseItemCallback.EVENT.register((player, world, hand) -> Use.builder(player, world));
+        UseItemCallback.EVENT.register((player, world, hand) -> Use.builder(player, world, hand));
     }
 
     public static void serverEvent () {
