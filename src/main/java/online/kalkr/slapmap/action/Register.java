@@ -6,12 +6,12 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.server.command.CommandManager;
 import online.kalkr.slapmap.action.server.Start;
 import online.kalkr.slapmap.action.subcommand.Slap;
-import online.kalkr.slapmap.action.subcommand.Stick;
 import online.kalkr.slapmap.action.world.Punch;
 import online.kalkr.slapmap.action.world.Use;
 
 public class Register {
     public static void slapCommand () {
+        Slap.initArgs();
         CommandRegistrationCallback.EVENT.register( (dispatcher, tank) ->
             dispatcher.register(CommandManager.literal("slap").requires(src -> src.hasPermissionLevel(2))
                 /*
@@ -24,14 +24,14 @@ public class Register {
                 /slap fennec                        -- give `fennec` image stick
                 /slap fennec url                    -- assign web image to slap image `fennec`
 
+                /slap fennec params
+
                 /slap help [subcommand]             -- complex help command
                 /slap list                          -- list all images
 
-                /slap delete fennec                 -- delete slap entry but not any map files.
-                /slap purge fennec                  -- delete slap entry and associated map files
+                /slap delete fennec                 -- delete slap entry and associated map files
 
                 */
-                .then(Stick.builder)
                 .then(Slap.builder)
             ));
     }
