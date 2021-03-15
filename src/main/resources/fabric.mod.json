@@ -3,7 +3,7 @@
   "id": "slapmap",
   "version": "${version}",
   "name": "Slapmap",
-  "description": "a minecraft mod that allows players to easily import and manage images through a simple set of commands",
+  "description": "A minecraft mod that allows players to easily import and manage images through a simple set of commands",
   "authors": [
     "kalkronline"
   ],

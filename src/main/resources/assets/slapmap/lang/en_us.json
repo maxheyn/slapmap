@@ -1,0 +1,40 @@
+{
+  "slapmap.stickname": "Slapstick - %d",
+
+  "slapmap.err.none": "There isn't an image named %d!",
+  "slapmap.err.none.tip": "Try importing one using: /slap %d url=...",
+
+  "slapmap.err.exisits": "There is already an image named %d!",
+  "slapmap.err.exisits.tip": "Try choosing a different name or deleting the other image by using: /slap delete %d.",
+
+  "slapmap.err.importerr": "An error occurred while fetching or processing the image!",
+  "slapmap.err.importerr.tip": "Are you sure that the URL is correct, or that your image is in a .png or .jpg format?",
+
+  "slapmap.help.head": "Slapmap - Import images using a simple set of commands.",
+  "slapmap.help.line1": "Use /slap help ... for more help.",
+  "slapmap.help.line2": "Mod by @fennekal.",
+
+  "slapmap.help.importing.head": "Importing Images Using Slapmap",
+  "slapmap.help.importing.line1": "/slap image_name url=...",
+  "slapmap.help.importing.line2": "Load images from the internet (as long as it is .png or .jpg) onto an array of maps using the above syntax.",
+  "slapmap.help.importing.line3": "If you would like to adjust the image, such as changing the width, height, or alignment, check out the adjusting page of the help command.",
+
+  "slapmap.help.adjusting.head": "Changing Image Properties",
+  "slapmap.help.adjusting.line1": "/slap image_name url=... width=... height=... align=...",
+  "slapmap.help.adjusting.line2": "Adjust properties using the (optional) arguments above. Width and height take an integer in blocks, and alignment is a position on the item frame.",
+  "slapmap.help.adjusting.line3": "Specifying both width and height will stretch the image, so if you want it to look nice, just choose either or.",
+  "slapmap.help.adjusting.line4": "THIS IS NOT YET IMPLEMENTED!!",
+
+  "slapmap.help.placing.head": "Placing Images",
+  "slapmap.help.placing.line1": "/slap image_name",
+  "slapmap.help.placing.line2": "After importing an image, you are given a Slapstick. If you don't have one, use the above syntax to give one to yourself.",
+  "slapmap.help.placing.line3": "Right click this stick wherever you want the array of maps to go. Maps can also be placed down directly without the need to worry about item frames.",
+
+  "slapmap.help.removing.head": "Removing Images",
+  "slapmap.help.removing.line1": "Arrays of maps can quickly be cleared by shift left-clicking a part of an image.",
+  "slapmap.help.removing.line2": "A single map can be removed by clicking without shift.",
+
+  "slapmap.help.deleting.head": "Deleting Images",
+  "slapmap.help.deleting.line1": "/slap delete image_name",
+  "slapmap.help.deleting.line2": "THIS IS NOT YET IMPLEMENTED!!"
+}
