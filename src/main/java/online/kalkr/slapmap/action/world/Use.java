@@ -5,6 +5,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -16,6 +18,7 @@ import net.minecraft.world.World;
 import online.kalkr.slapmap.Slapmap;
 import online.kalkr.slapmap.func.OrientationManager;
 
+import java.util.Arrays;
 import java.util.function.Function;
 
 public class Use {
@@ -26,7 +29,7 @@ public class Use {
 
         if (hit.getType() != HitResult.Type.BLOCK || world.isClient) return pass;
 
-        if (handItem.getName().getString().contains("Slapstick")) stickevent(player, world, hit, handItem);
+        if (handItem.getTag() != null && !handItem.getTag().getString("image").isEmpty()) stickevent(player, world, hit, handItem);
         if (handItem.getItem() == Items.FILLED_MAP) mapEvent(player, world, hit, handItem);
 
         return pass;
@@ -47,6 +50,12 @@ public class Use {
     private static void stickevent (PlayerEntity player, World world, HitResult hit, ItemStack handItem) {
         assert handItem.getTag() != null;
         String image = handItem.getTag().getString("image");
+
+        if (!Arrays.asList(Slapmap.mapManager.list()).contains(image)) {
+            player.sendMessage(new LiteralText("There isn't an image named "+ image +"!").formatted(Formatting.RED), false);
+            player.sendMessage(new LiteralText("Try importing one using: /slap "+ image +" url=...").formatted(Formatting.GRAY, Formatting.ITALIC), false);
+            return;
+        };
 
         Direction playerDirection = Direction.fromRotation(player.getRotationClient().y);
         Direction blockFace = ((BlockHitResult) hit).getSide();

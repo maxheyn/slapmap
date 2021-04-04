@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MapManager {
 
     private final Hashtable<String, ImageData> store = new Hashtable<String, ImageData>();
-    private final String slapDataPath;
+    private final String mapsPath;
 
     private static class ImageData {
         public int width;
@@ -32,11 +32,11 @@ public class MapManager {
     }
 
     public MapManager(MinecraftServer server) {
-        slapDataPath = (server.isDedicated() ? "world/." : server.getSavePath(WorldSavePath.ROOT).toString().split("\\./")[1]) + "/data/_slap.dat";
+        mapsPath = (server.isDedicated() ? "world/." : server.getSavePath(WorldSavePath.ROOT).toString().split("\\./")[1]) + "/data/";
 
         StringBuilder fileString = new StringBuilder();
         try {
-            Reader reader = new FileReader(slapDataPath);
+            Reader reader = new FileReader(mapsPath.concat("_slap.dat"));
             int data = reader.read();
             while (data != -1) {
                 fileString.append((char) data);
@@ -44,7 +44,12 @@ public class MapManager {
             }
             reader.close();
         } catch (IOException e) { return; }
+
         String[] lineArray = fileString.toString().split("\n");
+
+        if (fileString.toString().equals("")) {
+            return;
+        }
 
         for (String line:lineArray) {
             String[] items = line.split(" ");
@@ -73,12 +78,44 @@ public class MapManager {
         }
 
         try {
-            PrintWriter out = new PrintWriter(new FileWriter(slapDataPath, true));
+            PrintWriter out = new PrintWriter(new FileWriter(mapsPath.concat("_slap.dat"), true));
             out.append(key + " " + width + " " + height + " " + mapIdStr + "\n");
             out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e) { return; }
+    }
+
+    public void del(String key) {
+        Integer[] maps = store.get(key).mapIds;
+        for (int map: maps) {
+            File mapFile = new File(mapsPath+"map_"+String.valueOf(map)+".dat");
+            boolean didDelete = mapFile.delete();
         }
+
+        try {
+            Reader reader = new FileReader(mapsPath.concat("_slap.dat"));
+            StringBuilder fileString = new StringBuilder();
+            int data = reader.read();
+            while (data != -1) {
+                fileString.append((char) data);
+                data = reader.read();
+            }
+            reader.close();
+
+            PrintWriter temp = new PrintWriter(new FileWriter(mapsPath.concat("_slap.dat.tmp"), true));
+            String[] textEntries = fileString.toString().split("\n");
+            for (String entry: textEntries) {
+                if(!entry.contains(key)) {
+                    temp.append(entry+'\n');
+                }
+            }
+            temp.close();
+
+            File file = new File(mapsPath.concat("_slap.dat.tmp"));
+            File newFile = new File(mapsPath.concat("_slap.dat"));
+            boolean hi = file.renameTo(newFile);
+        } catch (IOException e) { return; }
+
+        store.remove(key);
     }
 
     public String[] list() {
