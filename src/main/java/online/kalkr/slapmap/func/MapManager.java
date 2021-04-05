@@ -112,7 +112,7 @@ public class MapManager {
 
             File file = new File(mapsPath.concat("_slap.dat.tmp"));
             File newFile = new File(mapsPath.concat("_slap.dat"));
-            boolean hi = file.renameTo(newFile);
+            boolean didRename = file.renameTo(newFile);
         } catch (IOException e) { return; }
 
         store.remove(key);

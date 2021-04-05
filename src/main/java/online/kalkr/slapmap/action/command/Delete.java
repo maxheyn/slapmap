@@ -17,6 +17,8 @@ import java.util.Arrays;
 
 public class Delete {
     public static int delete(CommandContext<ServerCommandSource> c) {
+        c.getSource().getMinecraftServer().save(true, true, true);
+
         String name = StringArgumentType.getString(c, "name");
 
         if (!Arrays.asList(Slapmap.mapManager.list()).contains(name)) {
