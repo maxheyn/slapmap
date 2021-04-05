@@ -47,6 +47,4 @@ public class Delete {
     public static boolean isIdToBeDeleted(ItemFrameEntity entityFromBox, String key) {
         return Slapmap.mapManager.getNameFromId(Slapmap.mapManager.getIdFromEntity(entityFromBox)).equals(key);
     }
-
 }
-

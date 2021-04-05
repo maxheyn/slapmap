@@ -1,4 +1,4 @@
-package online.kalkr.slapmap.action.command;
+package online.kalkr.slapmap.func;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
@@ -11,7 +11,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.concurrent.CompletableFuture;
 
-public class Suggester {
+public class CommandSuggester {
 
     public static Hashtable<String, String[]> argHolder = new Hashtable<>();
 
@@ -36,7 +36,7 @@ public class Suggester {
         String[] words = (context.getInput()+"\n").split(" ");
         words = Arrays.copyOfRange(words, 2, words.length);
 
-        String lastWord = Suggester.splitAndGet("\n", words[words.length-1], 0);
+        String lastWord = CommandSuggester.splitAndGet("\n", words[words.length - 1], 0);
 
         Enumeration<String> args = argHolder.keys();
         while ( args.hasMoreElements() ) {
@@ -59,7 +59,7 @@ public class Suggester {
 
             if (lastWord.contains(arg+"=")) {
                 for (String subarg : argHolder.get(arg)) {
-                    if (!subarg.contains(Suggester.splitAndGet("=", lastWord, 1))) continue;
+                    if (!subarg.contains(CommandSuggester.splitAndGet("=", lastWord, 1))) continue;
                     words[words.length - 1] = arg + "=" + subarg;
                     builder.suggest(String.join(" ", words));
                 }

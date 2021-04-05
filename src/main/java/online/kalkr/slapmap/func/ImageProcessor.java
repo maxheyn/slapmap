@@ -116,8 +116,6 @@ public class ImageProcessor {
         graphics2D.drawImage(urlimage, 0, 0, width, height, null);
         graphics2D.dispose();
 
-
-
         byte[] colorData = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
 
         int channels = image.getColorModel().hasAlpha() ? 4 : 3;
