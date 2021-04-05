@@ -18,7 +18,7 @@ public class Punch {
         Box pos = new Box(entity.getPos().x, entity.getPos().y, entity.getPos().z, entity.getPos().x, entity.getPos().y, entity.getPos().z);
         if (player.isSneaking() && player.isCreative()) {
             //TODO: get better box, instead of big dumb one that targets more than it should
-            pos = new Box(entity.getPos().x+99, entity.getPos().y+99, entity.getPos().z+99, entity.getPos().x-99, entity.getPos().y-99, entity.getPos().z-99);
+            pos = new Box(entity.getPos().x+999, entity.getPos().y+256, entity.getPos().z+999, entity.getPos().x-999, entity.getPos().y-256, entity.getPos().z-999);
         }
 
         for (ItemFrameEntity itemFrame : world.getEntitiesByType(EntityType.ITEM_FRAME, pos, fromBox -> isSameImage(fromBox, (ItemFrameEntity) entity))) {
