@@ -7,6 +7,7 @@ import net.minecraft.server.world.ServerWorld;
 import online.kalkr.slapmap.Slapmap;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.net.URL;
@@ -48,8 +49,8 @@ public class ImageProcessor {
         return mcColorsFinal;
     }
 
-    public boolean fromUrl(String urlString) {
-        BufferedImage image;
+    public boolean fromUrl(String urlString, int reqwidth, int reqheight) {
+        BufferedImage urlimage;
 
         try {
             URL url = new URL(urlString);
@@ -57,11 +58,65 @@ public class ImageProcessor {
 
             URLConnection connection = url.openConnection();
             connection.connect();
-            image = ImageIO.read(connection.getInputStream());
-            width = image.getWidth();
-            height = image.getHeight();
+            urlimage = ImageIO.read(connection.getInputStream());
+
         } catch (Exception e) { return false; }
-        if (image == null) return false;
+        if (urlimage == null) return false;
+
+        width = urlimage.getWidth();
+        height = urlimage.getHeight();
+
+        // not simplifying this until i know people are satisfied with the scaling system
+        // -1 scale
+        //  0 native
+        // >0 value
+
+        if (reqwidth == -1) {
+            if (reqheight == -1) {
+                int scww = ((int) Math.ceil(((double) width) / 128)) * 128;
+                int scwh = (int) ((((double) scww) / ((double) width)) * height);
+                int scwsq = ((int) Math.ceil(((double) scww)/128)) * ((int) Math.ceil(((double) scwh)/128));
+
+                int schh = ((int) Math.ceil(((double) height) / 128)) * 128;
+                int schw = (int) ((((double) schh) / ((double) height)) * width);
+                int schsq = ((int) Math.ceil(((double) schh)/128)) * ((int) Math.ceil(((double) schw)/128));
+
+                width = schw;
+                height = schh;
+                if (scwsq < schsq) {
+                    width = scww;
+                    height = scwh;
+                }
+            }
+            if (reqheight > 0) {
+                int schh = reqheight * 128;
+                width = (int) ((((double) schh) / ((double) height)) * width);
+                height = schh;
+            }
+        }
+        if (reqwidth == 0) {
+            if (reqheight > 0) {
+                height = reqheight * 128;
+            }
+        }
+        if (reqwidth > 0) {
+            if (reqheight == -1) {
+                int scww = reqwidth * 128;
+                height = (int) ((((double) scww) / ((double) width)) * height);
+                width = scww;
+            }
+            if (reqheight > 0) {
+                width = reqwidth * 128;
+                height = reqheight * 128;
+            }
+        }
+
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics2D = image.createGraphics();
+        graphics2D.drawImage(urlimage, 0, 0, width, height, null);
+        graphics2D.dispose();
+
+
 
         byte[] colorData = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
 
@@ -137,8 +192,8 @@ public class ImageProcessor {
     }
 
     public boolean toMaps(String imageName, String alignx, String aligny, ServerWorld world) {
-        int mapsWidth = width/128 + 1;
-        int mapsHeight = height/128 + 1;
+        int mapsWidth = (int) Math.ceil(((double) width)/128);
+        int mapsHeight = (int) Math.ceil(((double) height)/128);
 
         int shiftRight = (mapsWidth * 128 - width);
         if (alignx.equals("center")) {

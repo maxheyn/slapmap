@@ -17,8 +17,8 @@ public class Suggester {
 
     public static void initArgs() {
         argHolder.put("url", new String[]{"https://", "http://"});
-        //argHolder.put("width", new String[]{"nearest", "1", "2", "3"});
-        //argHolder.put("height", new String[]{"nearest", "1", "2", "3"});
+        argHolder.put("width", new String[]{"scale", "native", "1", "2", "3", "49"});
+        argHolder.put("height", new String[]{"scale", "native", "1", "2", "3", "49"});
         argHolder.put("align", new String[]{"topleft", "top", "topright", "left", "center", "right", "bottomleft", "bottom", "bottomright"});
     }
 

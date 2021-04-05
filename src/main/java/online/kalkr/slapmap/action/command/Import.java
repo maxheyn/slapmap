@@ -21,8 +21,8 @@ public class Import {
         String url = "";
         String alignx = "center";
         String aligny = "center";
-        //int width = -1;
-        //int height = -1;
+        int width = -1;
+        int height = -1;
 
         for (String kv : kvs) {
             String k = kv.split("=")[0];
@@ -44,6 +44,28 @@ public class Import {
                     aligny = "bottom";
                 }
             }
+            if (k.equals("width")) {
+                try {
+                    width = Integer.parseInt(v);
+                } catch (Exception ignored) {}
+                if (v.contains("native")) {
+                    width = 0;
+                }
+                if (v.contains("scale")) {
+                    width = -1;
+                }
+            }
+            if (k.equals("height")) {
+                try {
+                    height = Integer.parseInt(v);
+                } catch (Exception ignored) {}
+                if (v.contains("native")) {
+                    height = 0;
+                }
+                if (v.contains("scale")) {
+                    height = -1;
+                }
+            }
         }
 
         String name = StringArgumentType.getString(c, "name");
@@ -56,7 +78,7 @@ public class Import {
 
         ImageProcessor imgproc = new ImageProcessor();
 
-        if (!imgproc.fromUrl(url) || !imgproc.dither() || !imgproc.toMaps(name, alignx, aligny, src.getWorld())) {
+        if (!imgproc.fromUrl(url, width, height) || !imgproc.dither() || !imgproc.toMaps(name, alignx, aligny, src.getWorld())) {
             src.sendFeedback(new LiteralText("\"An error occurred while fetching or processing the image!").formatted(Formatting.RED), false);
             src.sendFeedback(new LiteralText("Are you sure that the URL is correct, or that your image is in a .png or .jpg format?").formatted(Formatting.GRAY, Formatting.ITALIC), false);
             return -1;
