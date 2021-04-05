@@ -19,7 +19,8 @@ public class Import {
         String[] kvs = StringArgumentType.getString(c, "args").split(" ");
 
         String url = "";
-        //String align = "center";
+        String alignx = "center";
+        String aligny = "center";
         //int width = -1;
         //int height = -1;
 
@@ -28,6 +29,20 @@ public class Import {
             String v = String.join("=", Arrays.copyOfRange(kv.split("="), 1, kv.split("=").length));
             if (k.equals("url")) {
                 url = v;
+            }
+            if (k.equals("align")) {
+                if (v.contains("left")) {
+                    alignx = "left";
+                }
+                if (v.contains("right")) {
+                    alignx = "right";
+                }
+                if (v.contains("top")) {
+                    aligny = "top";
+                }
+                if (v.contains("bottom")) {
+                    aligny = "bottom";
+                }
             }
         }
 
@@ -41,7 +56,7 @@ public class Import {
 
         ImageProcessor imgproc = new ImageProcessor();
 
-        if (!imgproc.fromUrl(url) || !imgproc.dither() || !imgproc.toMaps(name, src.getWorld())) {
+        if (!imgproc.fromUrl(url) || !imgproc.dither() || !imgproc.toMaps(name, alignx, aligny, src.getWorld())) {
             src.sendFeedback(new LiteralText("\"An error occurred while fetching or processing the image!").formatted(Formatting.RED), false);
             src.sendFeedback(new LiteralText("Are you sure that the URL is correct, or that your image is in a .png or .jpg format?").formatted(Formatting.GRAY, Formatting.ITALIC), false);
             return -1;

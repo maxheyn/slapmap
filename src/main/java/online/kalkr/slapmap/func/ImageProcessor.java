@@ -136,9 +136,25 @@ public class ImageProcessor {
         pixels[index][2] += diff[2] * factor / 16;
     }
 
-    public boolean toMaps(String imageName, ServerWorld world) {
+    public boolean toMaps(String imageName, String alignx, String aligny, ServerWorld world) {
         int mapsWidth = width/128 + 1;
         int mapsHeight = height/128 + 1;
+
+        int shiftRight = (mapsWidth * 128 - width);
+        if (alignx.equals("center")) {
+            shiftRight /= 2;
+        }
+        if (alignx.equals("left")) {
+            shiftRight = 0;
+        }
+
+        int shiftDown = (mapsHeight * 128 - height);
+        if (aligny.equals("center")) {
+            shiftDown /= 2;
+        }
+        if (aligny.equals("top")) {
+            shiftDown = 0;
+        }
 
         Integer[] stacks = new Integer[mapsWidth*mapsHeight];
 
@@ -151,10 +167,8 @@ public class ImageProcessor {
 
                 for (int y = 0; y < 128; y++) {
                     for (int x = 0; x < 128; x++) {
-
-                        int colorIndex = (x + y * width) + (mapx * 128) + (mapy * width * 128);
-
-                        if (colorIndex < colorIds.length && (mapx * 128) + x < width) {
+                        int colorIndex = (x + (y - shiftDown) * width - shiftRight) + (mapx * 128) + (mapy * width * 128);
+                        if (colorIndex >= (mapy * 128 + (y - shiftDown)) * width && (mapx * 128) + x < width + shiftRight && colorIndex >= 0 && colorIndex < colorIds.length) {
                             state.colors[x + y * 128] = (byte) colorIds[colorIndex];
                         } else {
                             state.colors[x + y * 128] = (byte) 0;

@@ -104,7 +104,7 @@ public class MapManager {
             PrintWriter temp = new PrintWriter(new FileWriter(mapsPath.concat("_slap.dat.tmp"), true));
             String[] textEntries = fileString.toString().split("\n");
             for (String entry: textEntries) {
-                if(!entry.contains(key)) {
+                if(!entry.split(" ")[0].equals(key)) {
                     temp.append(entry+'\n');
                 }
             }

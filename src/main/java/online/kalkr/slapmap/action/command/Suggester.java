@@ -19,7 +19,7 @@ public class Suggester {
         argHolder.put("url", new String[]{"https://", "http://"});
         //argHolder.put("width", new String[]{"nearest", "1", "2", "3"});
         //argHolder.put("height", new String[]{"nearest", "1", "2", "3"});
-        //argHolder.put("align", new String[]{"top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right"});
+        argHolder.put("align", new String[]{"topleft", "top", "topright", "left", "center", "right", "bottomleft", "bottom", "bottomright"});
     }
 
     public static CompletableFuture<Suggestions> imageNames(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
