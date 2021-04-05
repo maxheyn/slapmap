@@ -76,17 +76,28 @@ public class Import {
             return -1;
         }
 
-        ImageProcessor imgproc = new ImageProcessor();
+        String finalAlignx = alignx;
+        String finalAligny = aligny;
+        String finalUrl = url;
+        int finalWidth = width;
+        int finalHeight = height;
 
-        if (!imgproc.fromUrl(url, width, height) || !imgproc.dither() || !imgproc.toMaps(name, alignx, aligny, src.getWorld())) {
-            src.sendFeedback(new LiteralText("\"An error occurred while fetching or processing the image!").formatted(Formatting.RED), false);
-            src.sendFeedback(new LiteralText("Are you sure that the URL is correct, or that your image is in a .png or .jpg format?").formatted(Formatting.GRAY, Formatting.ITALIC), false);
-            return -1;
-        }
+        new Thread(() -> {
+            ImageProcessor imgproc = new ImageProcessor();
 
-        Give.giveStick(src.getPlayer(), name);
+            if (!imgproc.fromUrl(finalUrl, finalWidth, finalHeight) || !imgproc.dither() || !imgproc.toMaps(name, finalAlignx, finalAligny, src.getWorld())) {
+                src.sendFeedback(new LiteralText("\"An error occurred while fetching or processing the image!").formatted(Formatting.RED), false);
+                src.sendFeedback(new LiteralText("Are you sure that the URL is correct, or that your image is in a .png or .jpg format?").formatted(Formatting.GRAY, Formatting.ITALIC), false);
+                return;
+            }
 
-        src.getMinecraftServer().save(true, true, true);
+            try {
+                Give.giveStick(src.getPlayer(), name);
+                src.sendFeedback(new LiteralText("Done!").formatted(Formatting.GRAY, Formatting.ITALIC), false);
+            } catch (CommandSyntaxException ignored) {}
+        }).start();
+
+        src.sendFeedback(new LiteralText("Began importing image...").formatted(Formatting.GRAY, Formatting.ITALIC), false);
 
         return 0;
     }
