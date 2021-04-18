@@ -111,18 +111,18 @@ public class ImageProcessor {
             }
         }
 
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D graphics2D = image.createGraphics();
         graphics2D.drawImage(urlimage, 0, 0, width, height, null);
         graphics2D.dispose();
 
         byte[] colorData = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
 
-        int channels = image.getColorModel().hasAlpha() ? 4 : 3;
-        pixels = new float[colorData.length/channels][3];
+        pixels = new float[colorData.length/4][3];
 
-        for (int i = channels-3; i < colorData.length; i+=channels) {
-            pixels[i/channels] = new float[]{
+        for (int i = 0; i < colorData.length; i+=4) {
+            pixels[i/4] = new float[]{
+                    colorData[i+3] & 0xff,
                     colorData[i+2] & 0xff,
                     colorData[i+1] & 0xff,
                     colorData[i] & 0xff,
@@ -146,7 +146,7 @@ public class ImageProcessor {
                         (float) mcColorArray[colorId][1],
                         (float) mcColorArray[colorId][2],
                 };
-                colorIds[x+y*width] = colorId + 4;
+                colorIds[x+y*width] = oldpixel[3] < 127 ? 0 : colorId + 4;
 
                 float[] difference = find_difference(oldpixel, pixels[x+y*width]);
                 if(x+1<width) add_difference(x+1+y*width, difference, 7);

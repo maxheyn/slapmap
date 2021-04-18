@@ -32,7 +32,19 @@ public class MapManager {
     }
 
     public MapManager(MinecraftServer server) {
-        mapsPath = (server.isDedicated() ? "world/." : server.getSavePath(WorldSavePath.ROOT).toString().split("\\./")[1]) + "/data/";
+
+        String[] temp;
+        if (server.isDedicated()) {
+            mapsPath = "world/.";
+        }
+        else {
+            if (System.getProperty("os.name").contains("Windows")) {
+                temp = server.getSavePath(WorldSavePath.ROOT).toString().split("\\.\\\\");
+            } else {
+                temp = server.getSavePath(WorldSavePath.ROOT).toString().split("\\./");
+            }
+            mapsPath = temp[1].replaceAll("\\\\", "/") + "/data/";
+        }
 
         StringBuilder fileString = new StringBuilder();
         try {
