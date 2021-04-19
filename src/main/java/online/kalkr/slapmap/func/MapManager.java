@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;
+import net.minecraft.world.World;
 
 import java.io.*;
 import java.util.Arrays;
@@ -33,17 +34,12 @@ public class MapManager {
 
     public MapManager(MinecraftServer server) {
 
-        String[] temp;
+        String fs = System.getProperty("file.separator");
         if (server.isDedicated()) {
-            mapsPath = "world/.";
-        }
-        else {
-            if (System.getProperty("os.name").contains("Windows")) {
-                temp = server.getSavePath(WorldSavePath.ROOT).toString().split("\\.\\\\");
-            } else {
-                temp = server.getSavePath(WorldSavePath.ROOT).toString().split("\\./");
-            }
-            mapsPath = temp[1].replaceAll("\\\\", "/") + "/data/";
+            mapsPath = "world"+fs+"data"+fs;
+        } else {
+            String atFile = server.getSavePath(WorldSavePath.ROOT).toString().split("saves")[1].split(fs)[1];
+            mapsPath = "saves"+fs+atFile+fs+"data"+fs;
         }
 
         StringBuilder fileString = new StringBuilder();
