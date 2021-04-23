@@ -38,7 +38,10 @@ public class MapManager {
         if (server.isDedicated()) {
             mapsPath = "world"+fs+"data"+fs;
         } else {
-            String atFile = server.getSavePath(WorldSavePath.ROOT).toString().split("saves")[1].split(fs)[1];
+            String atFile = server.getSavePath(WorldSavePath.ROOT)
+                    .toString()
+                    .split("saves")[1]
+                    .split(fs.equals("\\") ? "\\\\" : fs)[1];
             mapsPath = "saves"+fs+atFile+fs+"data"+fs;
         }
 
