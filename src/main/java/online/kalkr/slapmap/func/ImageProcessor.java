@@ -215,8 +215,8 @@ public class ImageProcessor {
             for (int mapx = 0; mapx < mapsWidth; mapx++) {
 
                 ItemStack stack = FilledMapItem.createMap(world, 0, 0, (byte) 3, false, false);
-                MapState state = FilledMapItem.getMapState(stack, world);
-                state.locked = true;
+                MapState state = FilledMapItem.getOrCreateMapState(stack, world);
+                //state.locked = true;
 
                 for (int y = 0; y < 128; y++) {
                     for (int x = 0; x < 128; x++) {

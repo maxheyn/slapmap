@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public class Delete {
     public static int delete(CommandContext<ServerCommandSource> c) {
-        c.getSource().getMinecraftServer().save(true, true, true);
+        c.getSource().getServer().save(true, true, true);
 
         String name = StringArgumentType.getString(c, "name");
 
@@ -35,7 +35,7 @@ public class Delete {
 
         Box pos = new Box(player.getPos().x+999, player.getPos().y+256, player.getPos().z+999, player.getPos().x-999, player.getPos().y-256, player.getPos().z-999);
         for (ItemFrameEntity itemFrame : world.getEntitiesByType(EntityType.ITEM_FRAME, pos, fromBox -> isIdToBeDeleted(fromBox, name))) {
-            itemFrame.remove();
+            itemFrame.kill();
         }
 
         Slapmap.mapManager.del(name);

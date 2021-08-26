@@ -7,7 +7,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
@@ -15,11 +15,11 @@ import online.kalkr.slapmap.Slapmap;
 
 public class Give {
     public static void giveStick(PlayerEntity player, String name) {
-        CompoundTag imageTag = new CompoundTag();
+        NbtCompound imageTag = new NbtCompound();
         imageTag.putString("image", name);
 
         ItemStack slapstick = new ItemStack(Items.STICK);
-        slapstick.setTag(imageTag);
+        slapstick.setNbt(imageTag);
         slapstick.setCustomName(new LiteralText("Slapstick - "+ name));
 
         ItemEntity itemEntity = new ItemEntity(player.world, player.getPos().x, player.getPos().y, player.getPos().z, slapstick);

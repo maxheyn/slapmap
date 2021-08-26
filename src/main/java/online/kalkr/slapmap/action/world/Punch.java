@@ -26,7 +26,7 @@ public class Punch {
                 ItemEntity item = new ItemEntity(world, itemFrame.getPos().x, itemFrame.getPos().y, itemFrame.getPos().z, itemFrame.getHeldItemStack());
                 world.spawnEntity(item);
             }
-            itemFrame.remove();
+            itemFrame.kill();
         }
 
         return ActionResult.FAIL;
@@ -34,8 +34,8 @@ public class Punch {
 
     public static boolean isSameImage(ItemFrameEntity entityFromBox, ItemFrameEntity punchedEntity) {
         if (Slapmap.mapManager.getIdFromEntity(entityFromBox) == -1) return false;
-        int boxedId = entityFromBox.getHeldItemStack().getTag().getInt("map");
-        int punchedId = punchedEntity.getHeldItemStack().getTag().getInt("map");
+        int boxedId = entityFromBox.getHeldItemStack().getNbt().getInt("map");
+        int punchedId = punchedEntity.getHeldItemStack().getNbt().getInt("map");
         return Slapmap.mapManager.getNameFromId(boxedId).equals(Slapmap.mapManager.getNameFromId(punchedId));
     }
 }

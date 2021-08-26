@@ -147,7 +147,7 @@ public class MapManager {
         if (entity.getType() != EntityType.ITEM_FRAME) return -1;
         ItemStack heldItem = ((ItemFrameEntity) entity).getHeldItemStack();
         if (!heldItem.isItemEqual(Items.FILLED_MAP.getDefaultStack())) return -1;
-        return heldItem.getTag().getInt("map");
+        return heldItem.getNbt().getInt("map");
     }
 
     public boolean isIdManaged(int id) {

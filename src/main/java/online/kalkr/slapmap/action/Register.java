@@ -18,7 +18,7 @@ public class Register {
     public static void slapCommand () {
         CommandSuggester.initArgs();
         CommandRegistrationCallback.EVENT.register((dispatcher, tank) ->
-                dispatcher.register(CommandManager.literal("slap").requires(src -> src.hasPermissionLevel(2))
+                dispatcher.register(CommandManager.literal("slap").requires(src -> src.hasPermissionLevel(2)) //set to 0 to allow anyone to use the command (volatile!)
                         .executes(Help::help)
                         .then(CommandManager.literal("help")
                                 .executes(Help::help)
