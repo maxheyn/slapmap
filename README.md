@@ -8,12 +8,12 @@ https://user-images.githubusercontent.com/16215993/137979370-9f8b4977-a29e-4e66-
 
 ## Usage
 
-Standard: `/slap $imageName url=$imageURL`
-Align:    `/slap $imageName url=$imageURL align=$alignment`
-Width:    `/slap $imageName url=$imageURL width=$widthInBlocks`
-Height:   `/slap $imageName url=$imageURL height=$heightInBlocks`
-Combined: `/slap $imageName url=$imageURL align=$alignment width=$widthInBlocks height=$heightInBlocks`
-Example: `/slap minecraft url=https://images-na.ssl-images-amazon.com/images/I/418cEZfh8-L.jpg align=bottomleft height=8`
+Standard: `/slap $imageName url=$imageURL`<br>
+Align:    `/slap $imageName url=$imageURL align=$alignment`<br>
+Width:    `/slap $imageName url=$imageURL width=$widthInBlocks`<br>
+Height:   `/slap $imageName url=$imageURL height=$heightInBlocks`<br>
+Combined: `/slap $imageName url=$imageURL align=$alignment width=$widthInBlocks height=$heightInBlocks`<br>
+Example: `/slap minecraft url=https://images-na.ssl-images-amazon.com/images/I/418cEZfh8-L.jpg align=bottomleft height=8`<br>
 
 - `$imageName` is a descriptive name of your image.
    - minecraft, coolpic, logo, etc.
