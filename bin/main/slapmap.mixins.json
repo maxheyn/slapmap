@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "online.kalkr.slapmap.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "FixedAccessor",
+    "InteractMixin",
+    "KillMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

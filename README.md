@@ -1,3 +1,8 @@
 # slapmap
 
-A Minecraft mod that provides a set of commands that allow the player to import images into the game.
+A Minecraft serverside mod for the Fabric Modloader.
+Provides players a tool to import images from the internet into their worlds using Maps.
+
+## Demo
+
+## Usage
