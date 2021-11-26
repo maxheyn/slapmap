@@ -30,7 +30,7 @@ public class Use {
         if (hit.getType() != HitResult.Type.BLOCK || world.isClient) return pass;
 
         if (handItem.getNbt() != null && !handItem.getNbt().getString("image").isEmpty()) stickevent(player, world, hit, handItem);
-        if (handItem.getItem() == Items.FILLED_MAP) mapEvent(player, world, hit, handItem);
+        //if (handItem.getItem() == Items.FILLED_MAP) mapEvent(player, world, hit, handItem);
 
         return pass;
     }
