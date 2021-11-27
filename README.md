@@ -31,7 +31,25 @@ Example: `/slap minecraft url=https://images-na.ssl-images-amazon.com/images/I/4
    - `topright `
 - `$widthInBlocks` and `$heightInBlocks` are how wide or tall the picture should be in blocks. If you only specify one of them, the aspect ratio of the image is maintained in the dimension not specified. It is recommended to specify both so that they align within the block grid of the world.
 
-
-
-
+## Config
+The default config is below, with a comment to explain.
+```json5
+{
+  "MaxWidth": 4,
+  "MaxHeight": 4,
+  "PermLevel": 4,
+  "MultiplayerWorldName": "world",
+  "IsDefaultSettings": false
+}
+```
+- `MaxWidth` and `MaxHeight` are the limits to how wide or tall imported images can be when creating a new slapmap.
+   - If you import a new image and specify `height=<number_larger_than_MaxHeight>`, it will clamp it to MaxHeight and provide a message letting you know that the image was resized based on the values in the config. It will also automatically resize images if they do not have a specified height but would have otherwise been larger than the set values.
+   - You can change these live and save the file without needing to restart the server or use any commands to apply these. Once you change the values and save, any new slapmaps made will be subject to these restrictions.
+- `PermLevel` is the PermissionLevel needed to use any of slapmap's commands. 
+   - The default is 4, which means you need to be an operator with permission level 4 (the default operator permission level) to use the commands.
+   - To allow anyone to make slapmaps (dangerous on larger servers or with untrustworthy players), set this value to 0.
+   - You can set it to values 1-3 as well if you use the [other operator permission levels](https://gaming.stackexchange.com/questions/138602/what-does-op-permission-level-do) on your server.
+- `MultiplayerWorldName` is used for multiplayer worlds is used to make sure the slapmap database is placed in the correct directory. It defaults to `world`.
+   - This value should match whatever you have `level-name` set as in your `server.properties` file. If it does not match, your slapmaps will not be stored properly and you will lose any access to them via commands on restarts.
+- `IsDefaultSettings` is a debug value. Setting this to true and restarting your server should reset the config the default settings. You probably won't need to touch this.
 
