@@ -1,4 +1,4 @@
-# slapmap
+![SlapmapBanner](https://user-images.githubusercontent.com/16215993/143670104-be0eec61-fc64-4d09-bbf5-bc81b22c5c8c.png)
 
 A Minecraft serverside mod for the Fabric Modloader.
 Provides players a tool to import images from the internet into their worlds using Maps. 
