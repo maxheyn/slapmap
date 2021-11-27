@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;
-import net.minecraft.world.World;
+import online.kalkr.slapmap.SlapmapConfig;
 
 import java.io.*;
 import java.util.Arrays;
@@ -33,10 +33,14 @@ public class MapManager {
     }
 
     public MapManager(MinecraftServer server) {
+        String serverWorldName = "world";
+        try { serverWorldName = SlapmapConfig.getStringValueFromEntry("MultiplayerWorldName"); } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         String fs = System.getProperty("file.separator");
         if (server.isDedicated()) {
-            mapsPath = "world"+fs+"data"+fs;
+            mapsPath = serverWorldName+fs+"data"+fs;
         } else {
             String atFile = server.getSavePath(WorldSavePath.ROOT)
                     .toString()

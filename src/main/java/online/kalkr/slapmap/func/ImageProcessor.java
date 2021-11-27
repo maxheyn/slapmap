@@ -214,9 +214,15 @@ public class ImageProcessor {
         for (int mapy = 0; mapy < mapsHeight; mapy++) {
             for (int mapx = 0; mapx < mapsWidth; mapx++) {
 
-                ItemStack stack = FilledMapItem.createMap(world, 0, 0, (byte) 3, false, false);
+                /* this is just a stupid random number i chose that's really far out
+                because i cannot for the life of me figure out how to lock maps.
+                this centers the maps around that coordinate so that the bug
+                where maps get overridden when picking them up between 0,0 and
+                1024,1024 doesn't happen there anymore, now it happens here. */
+                final int STUPID_MAP_LOCKING_WORKAROUND_TEMP_FIX = 8425000;
+                ItemStack stack = FilledMapItem.createMap(world, STUPID_MAP_LOCKING_WORKAROUND_TEMP_FIX, STUPID_MAP_LOCKING_WORKAROUND_TEMP_FIX, (byte) 3, false, false);
                 MapState state = FilledMapItem.getOrCreateMapState(stack, world);
-                //state.locked = true;
+                //lock map here with mapstate somehow ^
 
                 for (int y = 0; y < 128; y++) {
                     for (int x = 0; x < 128; x++) {

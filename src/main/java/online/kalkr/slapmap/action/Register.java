@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.server.command.CommandManager;
+import online.kalkr.slapmap.SlapmapConfig;
 import online.kalkr.slapmap.action.command.Delete;
 import online.kalkr.slapmap.action.command.Give;
 import online.kalkr.slapmap.action.command.Help;
@@ -14,11 +15,24 @@ import online.kalkr.slapmap.action.world.Punch;
 import online.kalkr.slapmap.action.world.Use;
 import online.kalkr.slapmap.func.CommandSuggester;
 
+import java.io.FileNotFoundException;
+
 public class Register {
+
+    private static int getPermLevelInConfig() {
+        int permLevel = 4;
+        try { permLevel = SlapmapConfig.getIntValueFromEntry("PermLevel"); } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return permLevel;
+    }
+
+
     public static void slapCommand () {
         CommandSuggester.initArgs();
+        int permLevel = Register.getPermLevelInConfig();
         CommandRegistrationCallback.EVENT.register((dispatcher, tank) ->
-                dispatcher.register(CommandManager.literal("slap").requires(src -> src.hasPermissionLevel(0)) //set to 0 to allow anyone to use the command (volatile!)
+                dispatcher.register(CommandManager.literal("slap").requires(src -> src.hasPermissionLevel(permLevel)) //set to 0 to allow anyone to use the command (volatile!)
                         .executes(Help::help)
                         .then(CommandManager.literal("help")
                                 .executes(Help::help)
