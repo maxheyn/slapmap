@@ -103,6 +103,7 @@ public class MapManager {
         Integer[] maps = store.get(key).mapIds;
         for (int map: maps) {
             File mapFile = new File(mapsPath+"map_"+String.valueOf(map)+".dat");
+            System.out.println("Deleted map at " + mapsPath);
             boolean didDelete = mapFile.delete();
         }
 
