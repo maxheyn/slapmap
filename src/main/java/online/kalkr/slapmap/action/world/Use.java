@@ -5,7 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -52,8 +52,8 @@ public class Use {
         String image = handItem.getNbt().getString("image");
 
         if (!Arrays.asList(Slapmap.mapManager.list()).contains(image)) {
-            player.sendMessage(new LiteralText("There isn't an image named "+ image +"!").formatted(Formatting.RED), false);
-            player.sendMessage(new LiteralText("Try importing one using: /slap "+ image +" url=...").formatted(Formatting.GRAY, Formatting.ITALIC), false);
+            player.sendMessage(Text.literal("There isn't an image named "+ image +"!").formatted(Formatting.RED), false);
+            player.sendMessage(Text.literal("Try importing one using: /slap "+ image +" url=...").formatted(Formatting.GRAY, Formatting.ITALIC), false);
             return;
         };
 
