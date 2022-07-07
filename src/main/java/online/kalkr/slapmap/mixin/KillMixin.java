@@ -7,7 +7,6 @@ import net.minecraft.item.Items;
 import net.minecraft.server.command.KillCommand;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import online.kalkr.slapmap.Slapmap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,9 +31,9 @@ public class KillMixin {
         }
 
         if (count == 1) {
-            source.sendFeedback(new TranslatableText("commands.kill.success.single", name), true);
+            source.sendFeedback(Text.translatable("commands.kill.success.single", name), true);
         } else {
-            source.sendFeedback(new TranslatableText("commands.kill.success.multiple", count), true);
+            source.sendFeedback(Text.translatable("commands.kill.success.multiple", count), true);
         }
 
         returnable.setReturnValue(targets.size());

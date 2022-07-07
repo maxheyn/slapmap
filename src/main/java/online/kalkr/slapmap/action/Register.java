@@ -1,7 +1,7 @@
 package online.kalkr.slapmap.action;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.server.command.CommandManager;
@@ -31,7 +31,7 @@ public class Register {
     public static void slapCommand () {
         CommandSuggester.initArgs();
         int permLevel = Register.getPermLevelInConfig();
-        CommandRegistrationCallback.EVENT.register((dispatcher, tank) ->
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
                 dispatcher.register(CommandManager.literal("slap").requires(src -> src.hasPermissionLevel(permLevel)) //set to 0 to allow anyone to use the command (volatile!)
                         .executes(Help::help)
                         .then(CommandManager.literal("help")

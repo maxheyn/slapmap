@@ -4,7 +4,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import online.kalkr.slapmap.Slapmap;
 import online.kalkr.slapmap.SlapmapConfig;
@@ -89,8 +89,8 @@ public class Import {
         String name = StringArgumentType.getString(c, "name");
 
         if (Arrays.asList(Slapmap.mapManager.list()).contains(name)) {
-            src.sendFeedback(new LiteralText("There is already an image named "+ name +"!").formatted(Formatting.RED), false);
-            src.sendFeedback(new LiteralText("Try choosing a different name or deleting the other image by using: /slap delete "+ name +".").formatted(Formatting.GRAY, Formatting.ITALIC), false);
+            src.sendFeedback(Text.literal("There is already an image named "+ name +"!").formatted(Formatting.RED), false);
+            src.sendFeedback(Text.literal("Try choosing a different name or deleting the other image by using: /slap delete "+ name +".").formatted(Formatting.GRAY, Formatting.ITALIC), false);
             return -1;
         }
 
@@ -100,21 +100,21 @@ public class Import {
         if ((getMaxHeight() != -1 && height == -1 || (height > getMaxHeight())) && (getMaxWidth() != -1 && (width == -1 || width > getMaxWidth()))) {
             height = getMaxHeight();
             width = getMaxWidth();
-            src.sendFeedback(new LiteralText("> Your image was resized to fit the server's size constraints.").formatted(Formatting.YELLOW), false);
-            src.sendFeedback(new LiteralText("> If you don't like how it looks, delete it and remake it.").formatted(Formatting.YELLOW), false);
-            src.sendFeedback(new LiteralText("> Size Constraints - MaxWidth: [" + getMaxWidth() + "] MaxHeight: [" + getMaxHeight() + "]").formatted(Formatting.GOLD), false);
+            src.sendFeedback(Text.literal("> Your image was resized to fit the server's size constraints.").formatted(Formatting.YELLOW), false);
+            src.sendFeedback(Text.literal("> If you don't like how it looks, delete it and remake it.").formatted(Formatting.YELLOW), false);
+            src.sendFeedback(Text.literal("> Size Constraints - MaxWidth: [" + getMaxWidth() + "] MaxHeight: [" + getMaxHeight() + "]").formatted(Formatting.GOLD), false);
         }
         else if (getMaxHeight() != -1 && height == -1 || (height > getMaxHeight())) {
             height = getMaxHeight();
-            src.sendFeedback(new LiteralText("> Your image was resized to fit the server's size constraints.").formatted(Formatting.YELLOW), false);
-            src.sendFeedback(new LiteralText("> If you don't like how it looks, delete it and remake it.").formatted(Formatting.YELLOW), false);
-            src.sendFeedback(new LiteralText("> Size Constraints - MaxWidth: [" + getMaxWidth() + "] MaxHeight: [" + getMaxHeight() + "]").formatted(Formatting.GOLD), false);
+            src.sendFeedback(Text.literal("> Your image was resized to fit the server's size constraints.").formatted(Formatting.YELLOW), false);
+            src.sendFeedback(Text.literal("> If you don't like how it looks, delete it and remake it.").formatted(Formatting.YELLOW), false);
+            src.sendFeedback(Text.literal("> Size Constraints - MaxWidth: [" + getMaxWidth() + "] MaxHeight: [" + getMaxHeight() + "]").formatted(Formatting.GOLD), false);
         }
         else if (getMaxWidth() != -1 && (width == -1 || width > getMaxWidth())) {
             width = getMaxWidth();
-            src.sendFeedback(new LiteralText("> Your image was resized to fit the server's size constraints.").formatted(Formatting.YELLOW), false);
-            src.sendFeedback(new LiteralText("> If you don't like how it looks, delete it and remake it.").formatted(Formatting.YELLOW), false);
-            src.sendFeedback(new LiteralText("> Size Constraints - MaxWidth: [" + getMaxWidth() + "] MaxHeight: [" + getMaxHeight() + "]").formatted(Formatting.GOLD), false);
+            src.sendFeedback(Text.literal("> Your image was resized to fit the server's size constraints.").formatted(Formatting.YELLOW), false);
+            src.sendFeedback(Text.literal("> If you don't like how it looks, delete it and remake it.").formatted(Formatting.YELLOW), false);
+            src.sendFeedback(Text.literal("> Size Constraints - MaxWidth: [" + getMaxWidth() + "] MaxHeight: [" + getMaxHeight() + "]").formatted(Formatting.GOLD), false);
         }
 
         int finalWidth = width > getMaxWidth() ? getMaxWidth() : width;
@@ -124,18 +124,19 @@ public class Import {
             ImageProcessor imgproc = new ImageProcessor();
 
             if (!imgproc.fromUrl(finalUrl, finalWidth, finalHeight) || !imgproc.dither() || !imgproc.toMaps(name, finalAlignx, finalAligny, src.getWorld())) {
-                src.sendFeedback(new LiteralText("An error occurred while fetching or processing the image!").formatted(Formatting.RED), false);
-                src.sendFeedback(new LiteralText("Are you sure that the URL is correct, or that your image is in a .png or .jpg format?").formatted(Formatting.GRAY, Formatting.ITALIC), false);
+                src.sendFeedback(Text.literal("An error occurred while fetching or processing the image!").formatted(Formatting.RED), false);
+                src.sendFeedback(Text.literal("Are you sure that the URL is correct, or that your image is in a .png or .jpg format?").formatted(Formatting.GRAY, Formatting.ITALIC), false);
                 return;
             }
 
             try {
                 Give.giveStick(src.getPlayer(), name);
-                src.sendFeedback(new LiteralText("Done!").formatted(Formatting.GRAY, Formatting.ITALIC), false);
-            } catch (CommandSyntaxException ignored) {}
+                src.sendFeedback(Text.literal("Done!").formatted(Formatting.GRAY, Formatting.ITALIC), false);
+            //} catch (CommandSyntaxException ignored) {}
+            } catch (Exception e) {}
         }).start();
 
-        src.sendFeedback(new LiteralText("Began importing image...").formatted(Formatting.GRAY, Formatting.ITALIC), false);
+        src.sendFeedback(Text.literal("Began importing image...").formatted(Formatting.GRAY, Formatting.ITALIC), false);
 
         return 0;
     }
